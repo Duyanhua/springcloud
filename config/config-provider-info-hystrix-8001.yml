@@ -1,0 +1,60 @@
+server:
+  port: 8001
+
+#mybatis配置
+mybatis:
+#  开启别名
+#  type-aliases-package: com.dyh.springcloud.entity
+#  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:mappers/*xml
+  configuration:
+#    开启驼峰命名转换
+    map-underscore-to-camel-case: true
+#spring的配置
+spring:
+  application:
+    name: springcloud-provider-info
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://43.138.16.159:8806/cloud01?serverTimezone=UTC&useUnicode=true&autoReconnect=true&characterEncoding=utf8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #    阿里数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+#logging:
+#  config: classpath:log4j2.xml
+
+#eureka配置.将服务注册到eureka注册中心7001.
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+#      defaultZone: http://localhost:7001/eureka/  #发布地址
+
+  instance:
+    instance-id: springcloud-provider-hystrix-info8001 #修改eureka上的默认描述
+    lease-renewal-interval-in-seconds: 10
+    prefer-ip-address: true   #显示服务的IP地址
+
+#info配置
+info:
+  app:
+    name: dyh-springcloud
+    company.name: 这是一个公司
+
+
+management:
+  endpoint:
+    info:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+#        include: "*"
+        include: hystrix.stream
+##        include: "*"   #需要暴露的信息,这里是所有
+##      base-path: /actuator
+##        include: info,health,beans,env
+#hystrix:
+#  dashboard:
+#    proxy-stream-allow-list: localhost
